@@ -20,28 +20,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _buildVideoPlayerWidget() {
+    VideoViewController _vvv = VideoViewController(
+        source: 'assets/example.mp4', sourceType: VideoSourceType.asset);
+
+    _vvv.setLooping(true);
+
     return Container(
       alignment: Alignment.center,
       child: NativeVideoView(
-        keepAspectRatio: true,
-        showMediaController: true,
-	      enableVolumeControl: true,
-        onCreated: (controller) {
-          controller.setVideoSource(
-            'assets/example.mp4',
-            sourceType: VideoSourceType.asset,
-            requestAudioFocus: true,
-          );
-        },
-        onPrepared: (controller, info) {
-          controller.play();
-        },
-        onError: (controller, what, extra, message) {
-          print('Player Error ($what | $extra | $message)');
-        },
-        onCompletion: (controller) {
-          print('Video completed');
-        },
+        videoViewController: _vvv,
       ),
     );
   }

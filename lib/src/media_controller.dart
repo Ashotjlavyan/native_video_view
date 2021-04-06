@@ -1,5 +1,12 @@
 part of native_video_view;
 
+/// Callback that indicates that the volume has been changed using the
+/// media controller.
+typedef VolumeChangedCallback = void Function(double volume);
+
+/// Callback that indicates the progression of the media being played.
+typedef ProgressionCallback = void Function(int elapsedTime, int duration);
+
 /// Internal callback that notifies when a button of the media control is pressed
 /// or when the video controller calls a function related to a controller.
 typedef _ControlPressedCallback = void Function(_MediaControl control);

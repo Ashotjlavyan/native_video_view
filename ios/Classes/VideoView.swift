@@ -57,17 +57,17 @@ class VideoView : UIView {
     }
     
     private func configureVideoLayer(){
-        if let playerLayer = self.playerLayer {
-            playerLayer.frame = bounds
-            playerLayer.videoGravity = .resize
-        } else {
+        // if let playerLayer = self.playerLayer {
+        //     playerLayer.frame = bounds
+        //     playerLayer.videoGravity = .resize
+        // } else {
             playerLayer = AVPlayerLayer(player: player)
             playerLayer?.frame = bounds
             playerLayer?.videoGravity = .resize
                         
             self.clearSubLayers()
             layer.addSublayer(playerLayer!)
-        }
+        // }
     }
     
     private func clearSubLayers(){
