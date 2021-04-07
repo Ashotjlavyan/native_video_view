@@ -1,5 +1,9 @@
 part of native_video_view;
 
+/// Callback that indicates the progression of the media being played.
+typedef ProgressionDurationCallback = void Function(
+    Duration position, Duration duration);
+
 /// Widget that displays a video player.
 /// This widget calls an underlying player in the
 /// respective platform, [VideoView] in Android and
@@ -15,11 +19,16 @@ class NativeVideoView extends StatefulWidget {
   /// Only in Android.
   final bool useExoPlayer;
 
+  /// Instance of [ProgressionDurationCallback] to notify
+  /// when the time progresses while playing.
+  final ProgressionDurationCallback onProgress;
+
   /// Constructor of the widget.
   const NativeVideoView({
     Key key,
     @required this.videoViewController,
     this.useExoPlayer,
+    this.onProgress,
   })  : assert(videoViewController != null),
         super(key: key);
 
@@ -33,11 +42,20 @@ class _NativeVideoViewState extends State<NativeVideoView> {
     _listener = () {
       final double newAspectRatio =
           widget.videoViewController.value.aspectRatio;
+      final Duration newPosition = widget.videoViewController.value.position;
 
       if (newAspectRatio != _aspectRatio) {
         setState(() {
           _aspectRatio = newAspectRatio;
         });
+      }
+
+      if (newPosition != _position) {
+        _position = newPosition;
+        if (widget.onProgress != null) {
+          widget.onProgress(
+              _position, widget.videoViewController.value.duration);
+        }
       }
     };
   }
@@ -47,6 +65,7 @@ class _NativeVideoViewState extends State<NativeVideoView> {
   /// Value of the aspect ratio. Changes depending of the
   /// loaded file.
   double _aspectRatio = 4 / 3;
+  Duration _position;
 
   @override
   void initState() {
