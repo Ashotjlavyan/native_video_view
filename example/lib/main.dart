@@ -29,6 +29,9 @@ class _MyAppState extends State<MyApp> {
       alignment: Alignment.center,
       child: NativeVideoView(
         videoViewController: _vvv,
+        onProgress: (eee, ddd) {
+          print(eee);
+        }
       ),
     );
   }
