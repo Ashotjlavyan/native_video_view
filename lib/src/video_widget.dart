@@ -124,7 +124,7 @@ class _NativeVideoViewState extends State<NativeVideoView> {
   }
 
   /// Callback that is called when the view is created in the platform.
-  Future<void> onPlatformViewCreated(int id) {
+  void onPlatformViewCreated(int id) {
     widget.videoViewController.setChannel(id);
     widget.videoViewController.startBuffering();
   }

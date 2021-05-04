@@ -22,13 +22,12 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
   bool _isDisposed = false;
 
   void setChannel(int id) {
-    assert(id != null);
     channel = MethodChannel('native_video_view_$id');
     channel.setMethodCallHandler(_handleMethodCall);
   }
 
   @override
-  Future<void> dispose() {
+  Future<void> dispose() async {
     if (!_isDisposed) {
       _isDisposed = true;
       _stopProgressTimer();
@@ -75,7 +74,7 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
   /// [VideoSourceType.file] or [VideoSourceType.network]
   Future<void> startBuffering() async {
     assert(source != null);
-    bool requestAudioFocus = value.isRequestAudioFocus ?? false;
+    bool requestAudioFocus = value.isRequestAudioFocus;
     if (sourceType == VideoSourceType.asset) {
       File file = await _getAssetFile(source!);
       await _setVideosSource(file.path, sourceType, requestAudioFocus);
