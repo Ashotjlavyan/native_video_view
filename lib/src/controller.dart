@@ -4,20 +4,20 @@ part of native_video_view;
 /// controls the [VideoView] in Android and the [AVPlayer] in iOS.
 class VideoViewController extends ValueNotifier<VideoPlayerValue> {
   /// Path of the source loaded.
-  final String source;
+  final String? source;
 
   /// Type of source loaded.
-  final VideoSourceType sourceType;
+  final VideoSourceType? sourceType;
 
   /// Constructor of the class.
   VideoViewController({this.source, this.sourceType})
       : super(VideoPlayerValue(duration: null));
 
   /// MethodChannel to call methods from the platform.
-  MethodChannel channel;
+  late MethodChannel channel;
 
   /// Timer to control the progression of the video being played.
-  Timer _progressionController;
+  Timer? _progressionController;
 
   bool _isDisposed = false;
 
@@ -52,11 +52,11 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
       case 'player#onError':
         int what = call.arguments['what'] ?? -1;
         int extra = call.arguments['extra'] ?? -1;
-        String message = call.arguments['message'];
+        String? message = call.arguments['message'];
         value = VideoPlayerValue.erroneous(message);
         break;
       case 'player#onPrepared':
-        Map map = call.arguments;
+        Map? map = call.arguments;
 
         if (map != null) {
           value = value.copyWith(
@@ -77,10 +77,10 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
     assert(source != null);
     bool requestAudioFocus = value.isRequestAudioFocus ?? false;
     if (sourceType == VideoSourceType.asset) {
-      File file = await _getAssetFile(source);
+      File file = await _getAssetFile(source!);
       await _setVideosSource(file.path, sourceType, requestAudioFocus);
     } else {
-      await _setVideosSource(source, sourceType, requestAudioFocus);
+      await _setVideosSource(source!, sourceType, requestAudioFocus);
     }
   }
 
@@ -126,7 +126,7 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
   }
 
   /// Sets the video source from a file in the device memory.
-  Future<void> _setVideosSource(String videoSource, VideoSourceType sourceType,
+  Future<void> _setVideosSource(String videoSource, VideoSourceType? sourceType,
       bool requestAudioFocus) async {
     assert(videoSource != null);
     Map<String, dynamic> args = {
@@ -289,7 +289,7 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
 
   /// Gets the state of the player.
   /// Returns true if the player is playing or false if is stopped or paused.
-  Future<bool> isPlaying() async {
+  Future<bool?> isPlaying() async {
     if (_isDisposed) {
       return false;
     }
@@ -310,7 +310,7 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
   /// time is restarted.
   void _stopProgressTimer() {
     if (_progressionController != null) {
-      _progressionController.cancel();
+      _progressionController!.cancel();
       _progressionController = null;
     }
   }
@@ -318,7 +318,7 @@ class VideoViewController extends ValueNotifier<VideoPlayerValue> {
   /// Callback called by the timer when an event is called.
   /// Updates the elapsed time counter and notifies the widget
   /// state.
-  void _onProgressChanged(Timer timer) async {
+  void _onProgressChanged(Timer? timer) async {
     if (_isDisposed) {
       return;
     }

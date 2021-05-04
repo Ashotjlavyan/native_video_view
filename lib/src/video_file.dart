@@ -4,7 +4,7 @@ class VideoPlayerValue {
   /// Constructs a video with the given values. Only [duration] is required. The
   /// rest will initialize with default values when unset.
   VideoPlayerValue({
-    @required this.duration,
+    required this.duration,
     this.size,
     this.position = const Duration(),
     this.isPlaying = false,
@@ -20,13 +20,13 @@ class VideoPlayerValue {
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
-  VideoPlayerValue.erroneous(String errorDescription)
+  VideoPlayerValue.erroneous(String? errorDescription)
       : this(duration: null, errorDescription: errorDescription);
 
   /// The total duration of the video.
   ///
   /// Is null when [initialized] is false.
-  final Duration duration;
+  final Duration? duration;
 
   /// The current playback position.
   final Duration position;
@@ -48,12 +48,12 @@ class VideoPlayerValue {
   /// A description of the error if present.
   ///
   /// If [hasError] is false this is [null].
-  final String errorDescription;
+  final String? errorDescription;
 
   /// The [size] of the currently loaded video.
   ///
   /// Is null when [initialized] is false.
-  final Size size;
+  final Size? size;
 
   /// Indicates whether or not the video has been loaded and is ready to play.
   bool get initialized => duration != null;
@@ -65,10 +65,10 @@ class VideoPlayerValue {
   /// Returns [size.width] / [size.height] when size is non-null, or `1.0.` when
   /// size is null or the aspect ratio would be less than or equal to 0.0.
   double get aspectRatio {
-    if (size == null || size.width == 0 || size.height == 0) {
+    if (size == null || size!.width == 0 || size!.height == 0) {
       return 1.0;
     }
-    final double aspectRatio = size.width / size.height;
+    final double aspectRatio = size!.width / size!.height;
     if (aspectRatio <= 0) {
       return 1.0;
     }
@@ -78,15 +78,15 @@ class VideoPlayerValue {
   /// Returns a new instance that has the same values as this current instance,
   /// except for any overrides passed in as arguments to [copyWidth].
   VideoPlayerValue copyWith({
-    Duration duration,
-    Size size,
-    Duration position,
-    bool isPlaying,
-    bool isLooping,
-    bool isBuffering,
-    bool isRequestAudioFocus,
-    double volume,
-    String errorDescription,
+    Duration? duration,
+    Size? size,
+    Duration? position,
+    bool? isPlaying,
+    bool? isLooping,
+    bool? isBuffering,
+    bool? isRequestAudioFocus,
+    double? volume,
+    String? errorDescription,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
