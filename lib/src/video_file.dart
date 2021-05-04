@@ -5,13 +5,13 @@ part of native_video_view;
 /// and the video info [info] from the video.
 class VideoFile {
   /// Path of the source loaded.
-  final String source;
+  final String? source;
 
   /// Type of source loaded.
-  final VideoSourceType sourceType;
+  final VideoSourceType? sourceType;
 
   /// Info related to the loaded file.
-  final VideoInfo info;
+  final VideoInfo? info;
 
   /// Hidden constructor. Only the controller can
   /// create instances for this class.
@@ -21,7 +21,7 @@ class VideoFile {
   ///
   /// Creates a copy of the instance with the [changes]
   /// if the parameter is given.
-  VideoFile _copyWith({VideoFile changes}) {
+  VideoFile _copyWith({VideoFile? changes}) {
     if (changes == null) return this;
     return VideoFile._(
       source: changes.source ?? source,
@@ -57,18 +57,18 @@ class VideoFile {
 /// This class is loaded once the video is loaded in the player.
 class VideoInfo {
   /// Height of the video file.
-  final num height;
+  final num? height;
 
   /// Width of the video file.
-  final num width;
+  final num? width;
 
   /// Duration in milliseconds of the file.
-  final int duration;
+  final int? duration;
 
   /// Computes the aspect ratio if the [height] and [width] are not null.
   double get aspectRatio =>
-      height != null && width != null && height > 0 && width > 0
-          ? width / height
+      height != null && width != null && height! > 0 && width! > 0
+          ? width! / height!
           : 4 / 3;
 
   /// Hidden constructor of the class. Only the controller
@@ -80,7 +80,7 @@ class VideoInfo {
   });
 
   /// Factory to create an instance of this class given a JSON map.
-  factory VideoInfo._fromJson(Map map) {
+  factory VideoInfo._fromJson(Map? map) {
     return map != null
         ? VideoInfo._(
             duration: map['duration'],
